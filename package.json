@@ -1,9 +1,10 @@
 {
-  "name": "BlueGel",
+  "name": "bluegel",
+  "version": "0.0.1",
   "description": "Useful tools for Leap Motion development",
   "homepage": "http://github.com/arsduo/bluegel",
   "author": {"name": "Alex Koppel", "url": "http://github.com/arsduo"},
-  "files": "lib/",
+  "main": "lib/",
   "repository": {
     "type": "git",
     "url": "git://github.com/arsduo/bluegel.git"
