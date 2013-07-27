@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var utils = require("../lib/utils");
+var utils = require("../lib/bluegel").Utils;
 
 describe("Utils", function() {
   describe("dominantMovement", function() {
