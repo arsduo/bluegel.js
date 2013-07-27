@@ -4,7 +4,7 @@
   "description": "Useful tools for Leap Motion development",
   "homepage": "http://github.com/arsduo/bluegel",
   "author": {"name": "Alex Koppel", "url": "http://github.com/arsduo"},
-  "main": "lib/",
+  "main": "lib/bluegel.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/arsduo/bluegel.git"
@@ -15,7 +15,8 @@
   },
   "devDependencies": {
     "mocha": "~1.12.0",
-    "expect.js": "~0.2.0"
+    "expect.js": "~0.2.0",
+    "sinon": "~1.7"
   },
   "scripts": {
     "test": "mocha"
