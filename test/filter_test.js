@@ -1,4 +1,5 @@
 var expect = require('expect.js');
+var sinon = require('sinon');
 var Filter = require("../lib/bluegel").Filter;
 
 // a testing filter that uses the callback it's provided as the process method
@@ -54,16 +55,25 @@ describe("Filter", function() {
     var callback, controller;
 
     beforeEach(function() {
-      filter.on("test", function() { callback.apply(this, arguments) });
+      callback = sinon.spy();
+      filter.on("test", callback);
       controller = new TestController();
     })
 
     it("passes the frame to the callbacks", function() {
       var frame = controller.frame = {a: 3};
-      callback = function(receivedFrame) {
-        expect(receivedFrame).to.equal(frame);
-      }
+      callback.withArgs(frame);
       filter.drinkFromFirehose(controller);
+      expect(callback.withArgs(frame).calledOnce).to.be(true)
+    })
+
+    it("works with two callbacks", function() {
+      var frame = controller.frame = {a: 3};
+      callback2 = sinon.spy();
+      callback2.withArgs(frame);
+      filter.on("test", callback2);
+      filter.drinkFromFirehose(controller);
+      expect(callback2.withArgs(frame).calledOnce).to.be(true)
     })
   })
 })
