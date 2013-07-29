@@ -46,7 +46,7 @@ describe("Filter", function() {
     })
 
     it("is chainable", function() {
-      expect(filter.on("gesture", function() {})).to.equal(filter);
+      expect(filter.on("gesture", {type: "swipe"}, function() {})).to.equal(filter);
     })
   })
 
