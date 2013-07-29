@@ -1,6 +1,8 @@
 var expect = require('expect.js');
 var sinon = require('sinon')
-var GestureFilter = require("../../lib/bluegel").Filter.types.gesture;
+var BlueGel = require("../../lib/bluegel")
+var GestureFilter = BlueGel.Filter.types.gesture;
+var GestureAnalyzer = BlueGel.Analyzers.Gesture;
 
 var callback = function(analyzer) {
   return analyzer;
@@ -54,17 +56,44 @@ describe("Gesture Filter", function() {
     beforeEach(function() {
       frame = {gestures: [
         {type: "swipe", state: "stop"},
-        {type: "swipe", state: "update"},
         {type: "swipe", state: "start"}
       ]}
     })
 
-    // it("loops through the gestures, and if they pass it passes the frame on", function() {
-    //   filter.process(frame);
-    //   expect(callback.args.length).to.equal(frame.gestures.length);
-    //   for (var i = 0; i < callback.args.length; i++) {
-    //     expect(callback.args[i]).to.equal([gestures[i]]);
-    //   }
-    // })
+    it("loops through the gestures, passing the analyzed first matching one on", function() {
+      filter.process(frame);
+      expect(callback.calledOnce).to.be(true);
+      var analyzedGesture = new GestureAnalyzer(frame.gestures[0]);
+      expect(callback.firstCall.args).to.eql([analyzedGesture]);
+    })
+
+    it("always passes on update events", function() {
+      var updateGesture = {type: "swipe", state: "update"};
+      frame.gestures.push(updateGesture);
+      filter.process(frame);
+      expect(callback.calledTwice).to.be(true);
+      var analyzedGesture = new GestureAnalyzer(updateGesture);
+      expect(callback.secondCall.args).to.eql([analyzedGesture]);
+    })
+
+    it("doesn't pass on events within the time window", function() {
+      var clock = sinon.useFakeTimers();
+      filter.process(frame);
+      var callCount = callback.callCount;
+      clock.tick(filter.options.duplicateWindow - 1);
+      filter.process(frame);
+      expect(callback.callCount).to.be(callCount);
+      clock.restore();
+    })
+
+    it("will pass on events once the time window passes", function() {
+      var clock = sinon.useFakeTimers();
+      filter.process(frame);
+      var callCount = callback.callCount;
+      clock.tick(filter.options.duplicateWindow + 1);
+      filter.process(frame);
+      expect(callback.callCount).to.be(callCount + 1);
+      clock.restore();
+    })
   })
 })
