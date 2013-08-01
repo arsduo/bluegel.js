@@ -6,7 +6,6 @@ BlueGel
 
 _A library to help you develop Javascript-based Leap Motion apps._
 
-
 The Leap Motion is an exciting, powerful new tool, a device to launch a million
 blog posts and HCI papers. The possibilities of gesture-based interaction, as
 anyone who's seen a scifi movie or watched a Leap Motion demo can imagine.

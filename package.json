@@ -2,12 +2,12 @@
   "name": "bluegel",
   "version": "0.0.1",
   "description": "Useful tools for Leap Motion development",
-  "homepage": "http://github.com/arsduo/bluegel",
+  "homepage": "http://github.com/arsduo/bluegel.js",
   "author": {"name": "Alex Koppel", "url": "http://github.com/arsduo"},
   "main": "lib/bluegel.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/arsduo/bluegel.git"
+    "url": "git@github.com:arsduo/bluegel.js.git"
   },
   "license": "MIT",
   "dependencies": {
