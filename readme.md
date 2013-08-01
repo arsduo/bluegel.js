@@ -4,7 +4,7 @@ Status](https://travis-ci.org/arsduo/bluegel.png?branch=master)](https://travis-
 BlueGel
 =======
 
-_A library to help you develop Javascript-based Leap Motion apps. Blue gel: it
+_A library to help you develop Javascript-based Leap Motion apps._
 
 
 The Leap Motion is an exciting, powerful new tool, a device to launch a million
