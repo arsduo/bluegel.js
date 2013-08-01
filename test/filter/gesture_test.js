@@ -2,13 +2,12 @@ var expect = require('expect.js');
 var sinon = require('sinon')
 var BlueGel = require("../../lib/bluegel")
 var GestureFilter = BlueGel.Filter.types.gesture;
-var Analysis = BlueGel.Analysis;
 
 var callback = function(gesture) {
   return gesture;
 }
 
-describe("Gesture Filter", function() {
+describe("Gesture filter", function() {
   var options, callback, filter;
 
   beforeEach(function() {
