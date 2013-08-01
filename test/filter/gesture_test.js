@@ -2,10 +2,10 @@ var expect = require('expect.js');
 var sinon = require('sinon')
 var BlueGel = require("../../lib/bluegel")
 var GestureFilter = BlueGel.Filter.types.gesture;
-var GestureAnalyzer = BlueGel.Analyzers.Gesture;
+var Analysis = BlueGel.Analysis;
 
-var callback = function(analyzer) {
-  return analyzer;
+var callback = function(gesture) {
+  return gesture;
 }
 
 describe("Gesture Filter", function() {
@@ -51,20 +51,22 @@ describe("Gesture Filter", function() {
   })
 
   describe("process", function() {
-    var frame;
+    var frame, gesture;
 
     beforeEach(function() {
       frame = {gestures: [
         {type: "swipe", state: "stop"},
         {type: "swipe", state: "start"}
-      ]}
+      ]};
+      gesture = frame.gestures[0];
     })
 
     it("loops through the gestures, passing the analyzed first matching one on", function() {
       filter.process(frame);
       expect(callback.calledOnce).to.be(true);
-      var analyzedGesture = new GestureAnalyzer(frame.gestures[0]);
-      expect(callback.firstCall.args).to.eql([analyzedGesture]);
+      var args = callback.firstCall.args
+      expect(args).to.eql([gesture]);
+      expect(args[0].dominantMovement).to.be.ok();
     })
 
     it("always passes on update events", function() {
@@ -72,8 +74,7 @@ describe("Gesture Filter", function() {
       frame.gestures.push(updateGesture);
       filter.process(frame);
       expect(callback.calledTwice).to.be(true);
-      var analyzedGesture = new GestureAnalyzer(updateGesture);
-      expect(callback.secondCall.args).to.eql([analyzedGesture]);
+      expect(callback.secondCall.args).to.eql([updateGesture]);
     })
 
     it("doesn't pass on events within the time window", function() {

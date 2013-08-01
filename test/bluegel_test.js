@@ -6,8 +6,8 @@ describe("BlueGel", function() {
     expect(bluegel.Filter).to.be.ok();
   })
 
-  it("defines Analyzers", function() {
-    expect(bluegel.Analyzers).to.be.ok();
+  it("defines Analysis", function() {
+    expect(bluegel.Analysis).to.be.ok();
   })
 
   it("defines Utils", function() {
