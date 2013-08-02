@@ -12,7 +12,8 @@ describe("Hold filter", function() {
   var options, callback, filter, frame, hand, clock;
 
   beforeEach(function() {
-    options = {};
+    // set minimum duration to 0 to avoid having to fiddle with the clock
+    options = {minDuration: 0};
 
     callback = sinon.spy();
     filter = new HoldFilter(options, callback);
@@ -58,6 +59,10 @@ describe("Hold filter", function() {
 
     it("defines the maxDistance if not provided", function() {
       expect(filter.options).to.have.property("maxDistance");
+    })
+
+    it("defines the maxDistance if not provided", function() {
+      expect(filter.options).to.have.property("minDuration");
     })
 
     it("saves the callback", function() {
@@ -297,6 +302,32 @@ describe("Hold filter", function() {
           expect(gesture.state).to.equal("start");
           expect(gesture.position).to.eql(hand.palmPosition);
         })
+      })
+    })
+
+    describe("if a duration is set", function() {
+      beforeEach(function() {
+        options = {minDuration: 10};
+        filter = new HoldFilter(options, callback);
+      })
+
+      it("won't fire a callback until the duration is met", function() {
+        filter.process(frame);
+        expect(callback.called).to.be(false);
+        clock.tick(options.minDuration - 1);
+        filter.process(frame);
+        expect(callback.called).to.be(false);
+        clock.tick(2);
+        filter.process(frame);
+        expect(callback.called).to.be(true);
+      })
+
+      it("fires a start event once the threshold is passed", function() {
+        filter.process(frame);
+        clock.tick(options.minDuration + 1);
+        filter.process(frame);
+        var gesture = callback.firstCall.args[0];
+        expect(gesture.state).to.equal("start");
       })
     })
   })
