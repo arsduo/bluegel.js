@@ -16,7 +16,6 @@ describe("Gesture filter", function() {
     filter = new GestureFilter(options, callback);
   })
 
-
   describe("constructor", function() {
     it("sets the options provided", function() {
       var options = {type: "circle", duplicateWindow: 2, a: 3};

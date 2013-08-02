@@ -57,12 +57,13 @@ Features:
 
 * _Gesture analysis_: detect primary direction of movement
 * _Gesture filter_: eliminate ghost/duplicate events
+* _Hold gesture_: track a hand held in place (useful as a trigger, for
+instance)
 
 
 Planned:
 --------
 
-* _Hold filter_: filter for holding a hand or finger in place
 * _Slow swipe_: track continuous movement in a single direction too slow for
 the built-in Swipe gesture (for instance, controlling the volume by moving your
 hand up and down)
