@@ -1,16 +1,79 @@
 var expect = require('expect.js');
-var bluegel = require("../lib/bluegel");
+var sinon = require('sinon');
+var BlueGel = require("../lib/bluegel");
 
-describe("BlueGel", function() {
-  it("defines Filter", function() {
-    expect(bluegel.Filter).to.be.ok();
+// a testing filter that uses the callback it's provided as the process method
+// e.g. it always matches
+var TestFilter = function(options, callback) {
+  this.options = options;
+  this.process = callback;
+}
+
+// fake leap motion controller
+// takes an example frame to pass on
+var TestController = function() {
+  var that = this;
+  this.loop = function(callback) {
+    callback(that.frame);
+  }
+}
+
+describe("Filter", function() {
+  var filter;
+
+  beforeEach(function() {
+    BlueGel.availableFilters["test"] = TestFilter;
+    filter = new BlueGel();
   })
 
-  it("defines Analysis", function() {
-    expect(bluegel.Analysis).to.be.ok();
+  afterEach(function() {
+    delete BlueGel.availableFilters["test"];
   })
 
-  it("defines Utils", function() {
-    expect(bluegel.Utils).to.be.ok();
+  describe("constructor", function() {
+    it("records the options", function() {
+      var options = {a: 2};
+      expect(new BlueGel(options).options).to.equal(options);
+    })
+
+    it("works with no specified options", function() {
+      expect(new BlueGel().options).to.eql({});
+    })
+  })
+
+  describe("on", function() {
+    it("throws an exception for an unknown type", function() {
+      expect(function() { filter.on("badType", function() {}) }).to.throwException();
+    })
+
+    it("is chainable", function() {
+      expect(filter.on("swipe", {type: "swipe"}, function() {})).to.equal(filter);
+    })
+  })
+
+  describe("drinkFromFirehose", function() {
+    var callback, controller;
+
+    beforeEach(function() {
+      callback = sinon.spy();
+      filter.on("test", callback);
+      controller = new TestController();
+    })
+
+    it("passes the frame to the callbacks", function() {
+      var frame = controller.frame = {a: 3};
+      callback.withArgs(frame);
+      filter.drinkFromFirehose(controller);
+      expect(callback.withArgs(frame).calledOnce).to.be(true)
+    })
+
+    it("works with two callbacks", function() {
+      var frame = controller.frame = {a: 3};
+      callback2 = sinon.spy();
+      callback2.withArgs(frame);
+      filter.on("test", callback2);
+      filter.drinkFromFirehose(controller);
+      expect(callback2.withArgs(frame).calledOnce).to.be(true)
+    })
   })
 })

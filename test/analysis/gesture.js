@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var Analysis = require("../../lib/bluegel").Analysis;
+var Analysis = require("../../lib/analysis");
 
 describe("gesture analysis enhancements", function() {
   var gesture;
