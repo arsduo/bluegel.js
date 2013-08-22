@@ -128,6 +128,8 @@ BlueGel is very young and in flux (a little like the Leap Motion itself); there'
 * _Hold gesture_: track a hand held in place (useful as a trigger, for
 instance)
 
+All available filters: "swipe", "circle", "screentap", "keytap", "hold", and "frame" (to get every Leap Motion frame)
+
 Planned:
 --------
 
