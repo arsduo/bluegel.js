@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 var sinon = require('sinon')
-var BlueGel = require("../../lib/bluegel")
-var HoldFilter = BlueGel.Filter.types.hold;
+var HoldFilter= require("../../lib/filter/hold")
 var TrackedHolds = require("../../lib/filter/hold/tracked_holds");
 
 var callback = function(gesture) {
