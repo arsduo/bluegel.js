@@ -13,17 +13,23 @@ var TestFilter = function(options, callback) {
 // takes an example frame to pass on
 var TestController = function() {
   var that = this;
+  // mock up accepting a loop callback function
   this.loop = function(callback) {
-    callback(that.frame);
+    that.callback = callback;
+  }
+  // and provide a mechanism to trigger it
+  this.executeLoop = function(frame) {
+    that.callback(frame);
   }
 }
 
 describe("Filter", function() {
-  var filter;
+  var filter, controller;
 
   beforeEach(function() {
     BlueGel.availableFilters["test"] = TestFilter;
-    filter = new BlueGel();
+    controller = new TestController();
+    filter = new BlueGel(controller);
   })
 
   afterEach(function() {
@@ -31,13 +37,21 @@ describe("Filter", function() {
   })
 
   describe("constructor", function() {
+    it("records the controller", function() {
+      expect(filter.controller).to.be(controller);
+    })
+
     it("records the options", function() {
       var options = {a: 2};
-      expect(new BlueGel(options).options).to.equal(options);
+      expect(new BlueGel(new TestController(), options).options).to.equal(options);
     })
 
     it("works with no specified options", function() {
-      expect(new BlueGel().options).to.eql({});
+      expect(filter.options).to.eql({});
+    })
+
+    it("throws an error if no controller is specified", function() {
+      expect(function() { new BlueGel() }).to.throwException();
     })
   })
 
@@ -51,28 +65,26 @@ describe("Filter", function() {
     })
   })
 
-  describe("drinkFromFirehose", function() {
-    var callback, controller;
+  describe("processing events", function() {
+    var callback, frame;
 
     beforeEach(function() {
       callback = sinon.spy();
       filter.on("test", callback);
-      controller = new TestController();
+      frame = controller.frame = {a: 3};
     })
 
     it("passes the frame to the callbacks", function() {
-      var frame = controller.frame = {a: 3};
       callback.withArgs(frame);
-      filter.drinkFromFirehose(controller);
+      controller.executeLoop(frame);
       expect(callback.withArgs(frame).calledOnce).to.be(true)
     })
 
     it("works with two callbacks", function() {
-      var frame = controller.frame = {a: 3};
       callback2 = sinon.spy();
       callback2.withArgs(frame);
       filter.on("test", callback2);
-      filter.drinkFromFirehose(controller);
+      controller.executeLoop(frame);
       expect(callback2.withArgs(frame).calledOnce).to.be(true)
     })
   })
