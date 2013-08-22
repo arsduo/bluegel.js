@@ -13,6 +13,6 @@ describe("gesture analysis enhancements", function() {
 
   it("adds a dominantMovement method that calculates the dominant movement", function() {
     Analysis.enhanceGesture(gesture);
-    expect(gesture.dominantMovement()).to.eql({direction: "y", distance: 2});
+    expect(gesture.dominantMovement).to.eql({direction: "y", distance: 2});
   })
 })
