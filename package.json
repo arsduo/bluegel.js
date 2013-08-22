@@ -1,6 +1,6 @@
 {
   "name": "bluegel",
-  "version": "0.0.3",
+  "version": "0.2.0",
   "description": "Useful tools for Leap Motion development",
   "homepage": "http://github.com/arsduo/bluegel.js",
   "author": {"name": "Alex Koppel", "url": "http://github.com/arsduo"},
