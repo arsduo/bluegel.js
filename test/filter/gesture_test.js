@@ -52,8 +52,8 @@ describe("Gesture filter", function() {
 
     beforeEach(function() {
       frame = {gestures: [
-        {type: "swipe", state: "stop"},
-        {type: "swipe", state: "start"}
+        {type: "swipe", state: "stop", startPosition: [], position: []},
+        {type: "swipe", state: "start", startPosition: [], position: []}
       ]};
       gesture = frame.gestures[0];
     })
@@ -67,7 +67,7 @@ describe("Gesture filter", function() {
     })
 
     it("always passes on update events", function() {
-      var updateGesture = {type: "swipe", state: "update"};
+      var updateGesture = {type: "swipe", state: "update", startPosition: [], position: []};
       frame.gestures.push(updateGesture);
       filter.process(frame);
       expect(callback.calledTwice).to.be(true);
