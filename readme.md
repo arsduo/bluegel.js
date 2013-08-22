@@ -1,5 +1,5 @@
 [![Build
-Status](https://travis-ci.org/arsduo/bluegel.png?branch=master)](https://travis-ci.org/arsduo/bluegel)
+Status](https://travis-ci.org/arsduo/bluegel.js.png?branch=master)](https://travis-ci.org/arsduo/bluegel.js)
 
 BlueGel
 =======
